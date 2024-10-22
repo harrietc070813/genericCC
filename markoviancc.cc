@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 using namespace std;
 
@@ -144,6 +145,10 @@ void MarkovianCC::update_intersend_time() {
   // Calculate useful quantities
   double rtt = rtt_window.get_unjittered_rtt();
   double queuing_delay = rtt - min_rtt;
+
+  std::stringstream ss;
+  ss << "timestamp " << cur_time << ", min_rtt " << min_rtt << ", rtt " << rtt << ", queuing_delay " << queuing_delay << ", delta " << delta;
+  log(ss.str());
 
   double target_window;
   if (queuing_delay == 0)
@@ -396,4 +401,10 @@ void MarkovianCC::interpret_config_str(string config) {
     cout << "Incorrect format of configuration string '" << config
 	 << "'. Using constant delta mode with delta = 1 by default" << endl;
   }
+}
+
+void MarkovianCC::log(std::string msg) {
+	if (logfile.is_open()) {
+		logfile << msg << std::endl;
+	}
 }

@@ -16,6 +16,7 @@
 #include <functional>
 #include <iostream>
 #include <map>
+#include <fstream>
 
 class MarkovianCC : public CCC {
   typedef double Time;
@@ -105,6 +106,10 @@ class MarkovianCC : public CCC {
   int flow_id;
   
   Time cur_tick;
+
+  // For logging
+  std::string logfilepath;
+	std::ofstream logfile;
   
   double current_timestamp();
   
@@ -117,7 +122,7 @@ class MarkovianCC : public CCC {
 public:
   void interpret_config_str(std::string config);
   
-  MarkovianCC(double delta)
+  MarkovianCC(double delta, std::string logfilepath_)
     : delta(delta),
       unacknowledged_packets(),
       min_rtt(),
@@ -163,9 +168,24 @@ public:
       slow_start(),
       slow_start_threshold(),
       flow_id(++ flow_id_counter),
-      cur_tick()
-  {}
+      cur_tick(),
+      logfilepath(logfilepath_),
+      logfile()
+  {		
+    if (!logfilepath.empty()) {
+			std::cout << "Logging at " << logfilepath << "\n";
+			logfile.open(logfilepath);
+		}
+    else {
+      std::cout << "No logfilepath is given." << std::endl;
+    }
+  }
   
+  ~MarkovianCC() { if (logfile.is_open()) logfile.close(); }
+  
+  // Log functions
+  void log(std::string str);
+
   // callback functions for packet events
   virtual void init() override;
   virtual void onACK(int ack, double receiver_timestamp, 

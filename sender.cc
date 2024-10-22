@@ -25,6 +25,7 @@ int main( int argc, char *argv[] ) {
 	string traffic_params = "";
 	// for MarkovianCC
 	string delta_conf = "";
+	string logfilepath = "";
 	// length of packet train for estimating bottleneck bandwidth
 	int train_length = 1;
 
@@ -75,6 +76,8 @@ int main( int argc, char *argv[] ) {
 			LINK_LOGGING_FILENAME = arg.substr( 8 );
 			LINK_LOGGING = true;
 		}
+		else if (arg.substr( 0, 12) == "logfilepath=")
+			logfilepath = arg.substr( 12 );
 		else if( arg.substr( 0, 15 ) == "traffic_params=")
 			traffic_params = arg.substr( 15 );
 		else if (arg.substr( 0, 11) == "delta_conf=")
@@ -147,7 +150,7 @@ int main( int argc, char *argv[] ) {
 	}
 	else if ( cctype == CCType::MARKOVIANCC ){
 		fprintf( stdout, "Using MarkovianCC.\n");
-		MarkovianCC congctrl(1.0);
+		MarkovianCC congctrl(1.0, logfilepath);
 		assert(delta_conf != "");
 		congctrl.interpret_config_str(delta_conf);
 		CTCP< MarkovianCC > connection( congctrl, serverip, serverport, sourceport, train_length );
