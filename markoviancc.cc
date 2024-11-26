@@ -17,6 +17,8 @@ double MarkovianCC::current_timestamp( void ){
   return cur_tick;
 }
 
+double start_time = 0;
+
 void MarkovianCC::init() {
   if (num_pkts_acked != 0) {
     cout << "% Packets Lost: " << (100.0 * num_pkts_lost) /
@@ -216,6 +218,10 @@ void MarkovianCC::onACK(int ack,
   double cur_time = current_timestamp();
   assert(cur_time > sent_time);
 
+  if (num_pkts_acked == 0) {
+    start_time = cur_time; // Initialize start_time on the first ACK
+  }
+
   rtt_window.new_rtt_sample(cur_time - sent_time, cur_time);
   min_rtt = rtt_window.get_min_rtt(); //min(min_rtt, cur_time - sent_time);
   assert(rtt_window.get_unjittered_rtt() >= min_rtt);
@@ -268,10 +274,26 @@ void MarkovianCC::onACK(int ack,
   }
 
   ++ num_pkts_acked;
+
+  // Logging using ss
+  std::stringstream ss;
+  // ss << "(onACK)ACK Received - Ack Num: " << ack
+  //    << ", Time: " << cur_time
+  //    << ", Packets Acked: " << num_pkts_acked << endl;
+
+  // Calculate throughput (packets/sec)
+  //double throughput = (double)num_pkts_acked / (cur_time - start_time);
+  //ss << "(onACK)timestamp " << cur_time << ", throughput " << throughput;
+  ss << "(onACK)timestamp " << cur_time << ", num_packets " << num_pkts_acked;
+  log(ss.str());
 }
 
 void MarkovianCC::onPktSent(int seq_num) {
   double cur_time = current_timestamp();
+
+  if (num_pkts_sent == 0) {
+    start_time = cur_time; // Initialize start_time on the first packet sent
+  }
   // double tmp_prev_avg_sending_rate = 0.0;
   // if (prev_intersend_time != 0.0)
   //   tmp_prev_avg_sending_rate = 1.0 / prev_intersend_time;
@@ -292,8 +314,20 @@ void MarkovianCC::onPktSent(int seq_num) {
     }
     break;
   }
-  //update_intersend_time();
+  //update_intersend_time();   //log cur_time and num_pkts_sent to get the throughput 
   ++ num_pkts_sent;
+
+  // Logging using ss
+  std::stringstream ss;
+  // ss << "(onPktSent)Packet Sent - Seq Num: " << seq_num
+  //    << ", Time: " << cur_time
+  //    << ", Packets Sent: " << num_pkts_sent << endl;
+
+  // Calculate throughput
+  //double throughput = (double)num_pkts_sent / (cur_time - start_time);
+  //ss << "(onPKTSent)timestamp " << cur_time << ", throughput " << throughput;
+  ss << "(onPKTSent)timestamp " << cur_time << ", num_packets " << num_pkts_sent;
+  log(ss.str());
 
   _intersend_time = randomize_intersend(cur_intersend_time);
 }
