@@ -149,7 +149,7 @@ void MarkovianCC::update_intersend_time() {
   double queuing_delay = rtt - min_rtt;
 
   std::stringstream ss;
-  ss << "timestamp " << cur_time << ", min_rtt " << min_rtt << ", rtt " << rtt << ", queuing_delay " << queuing_delay << ", delta " << delta;
+  ss << "timestamp " << cur_time << ", min_rtt " << min_rtt << ", standing_rtt " << rtt << ", queuing_delay " << queuing_delay << ", delta " << delta << ", rtt " << rtt_window.get_latest_rtt();
   log(ss.str());
 
   double target_window;
