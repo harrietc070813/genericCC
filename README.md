@@ -165,3 +165,31 @@ such as Remy.
 `./sender serverip=$MAHIMAHI_BASE offduration=0 onduration=60000
 cctype=markovian delta_conf=do_ss:auto:0.5
 traffic_params=deterministic,num_cycles=1`
+
+### For Jitter-based Attack on Copa
+To obtain genericCC logs, add `logfilepath=<path>` when starting the server.
+
+The generated log contains three types of information:
+  - Copa Parameter
+
+    For example,
+
+    `timestamp 2612.07, min_rtt 160.699, standing_rtt 161.003, queuing_delay 0.304189, delta 0.5, rtt 161.331`
+
+    All values (except for `delta`) are in milliseconds.
+
+  - <add subtitle>
+
+    For example,
+
+    `(onACK)timestamp 2623.2, num_packets 38`
+
+    <add explanation>
+
+  - <add subtitle>
+
+    For example,
+
+    `(onPKTSent)timestamp 2631.68, num_packets 106`
+
+    <add explanation>
