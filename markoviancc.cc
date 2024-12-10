@@ -277,13 +277,8 @@ void MarkovianCC::onACK(int ack,
 
   // Logging using ss
   std::stringstream ss;
-  // ss << "(onACK)ACK Received - Ack Num: " << ack
-  //    << ", Time: " << cur_time
-  //    << ", Packets Acked: " << num_pkts_acked << endl;
 
   // Calculate throughput (packets/sec)
-  //double throughput = (double)num_pkts_acked / (cur_time - start_time);
-  //ss << "(onACK)timestamp " << cur_time << ", throughput " << throughput;
   ss << "(onACK)timestamp " << cur_time << ", num_packets " << num_pkts_acked;
   log(ss.str());
 }
@@ -319,13 +314,8 @@ void MarkovianCC::onPktSent(int seq_num) {
 
   // Logging using ss
   std::stringstream ss;
-  // ss << "(onPktSent)Packet Sent - Seq Num: " << seq_num
-  //    << ", Time: " << cur_time
-  //    << ", Packets Sent: " << num_pkts_sent << endl;
 
   // Calculate throughput
-  //double throughput = (double)num_pkts_sent / (cur_time - start_time);
-  //ss << "(onPKTSent)timestamp " << cur_time << ", throughput " << throughput;
   ss << "(onPKTSent)timestamp " << cur_time << ", num_packets " << num_pkts_sent;
   log(ss.str());
 

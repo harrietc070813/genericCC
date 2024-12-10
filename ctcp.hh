@@ -47,7 +47,7 @@ private:
 
 public:
 
-  CTCP( T& s_congctrl, string ipaddr, int port, int srcport, int train_length ) 
+  CTCP( T& s_congctrl, string ipaddr, int port, int srcport, int train_length )
     :   congctrl( s_congctrl ), 
         socket(), 
         conntype( SENDER ),

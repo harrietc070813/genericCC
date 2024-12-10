@@ -171,7 +171,7 @@ public:
       cur_tick(),
       logfilepath(logfilepath_),
       logfile()
-  {		
+  {
     if (!logfilepath.empty()) {
 			std::cout << "Logging at " << logfilepath << "\n";
 			logfile.open(logfilepath);
@@ -180,9 +180,9 @@ public:
       std::cout << "No logfilepath is given." << std::endl;
     }
   }
-  
+
   ~MarkovianCC() { if (logfile.is_open()) logfile.close(); }
-  
+
   // Log functions
   void log(std::string str);
 
