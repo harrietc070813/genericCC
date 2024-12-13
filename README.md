@@ -178,18 +178,14 @@ The generated log contains three types of information:
 
     All values (except for `delta`) are in milliseconds.
 
-  - <add subtitle>
+  - Ack Data
 
     For example,
 
     `(onACK)timestamp 2623.2, num_packets 38`
 
-    <add explanation>
-
-  - <add subtitle>
+  - Packet Sent Data
 
     For example,
 
     `(onPKTSent)timestamp 2631.68, num_packets 106`
-
-    <add explanation>
